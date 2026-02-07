@@ -83,7 +83,7 @@ public class LogTable extends JTable implements FocusListener, ActionListener
     }
 
     private void init() {
-        KeyStroke copy = KeyStroke.getKeyStroke(KeyEvent.VK_C,ActionEvent.CTRL_MASK,false);
+        KeyStroke copy = KeyStroke.getKeyStroke(KeyEvent.VK_C,InputEvent.CTRL_DOWN_MASK,false);
         registerKeyboardAction(this,"Copy",copy,JComponent.WHEN_FOCUSED);
 
         addFocusListener( this );
@@ -330,7 +330,7 @@ public class LogTable extends JTable implements FocusListener, ActionListener
                         gotoNextBookmark();
                     return true;
                 case KeyEvent.VK_F:
-                    if(e.getID() == KeyEvent.KEY_PRESSED && ( (e.getModifiers() & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK))
+                    if(e.getID() == KeyEvent.KEY_PRESSED && ( (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == InputEvent.CTRL_DOWN_MASK))
                     {
                         m_LogFilterMain.setFindFocus();
                         return true;

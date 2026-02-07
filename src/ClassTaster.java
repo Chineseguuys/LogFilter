@@ -13,13 +13,13 @@ public class ClassTaster
         {
             Method      method      = null;
 
-            //테스트 값을 받은경우
+
             if ( params.length > 0 )
             {
                 method = getMethod( cls, strMethod );
                 if ( method != null )
                 {
-                    method.invoke( cls.newInstance(), params );
+                    method.invoke( cls.getDeclaredConstructor().newInstance(), params );
                 }
             }
             else
@@ -42,7 +42,7 @@ public class ClassTaster
                     else
                     {
                         disply(method, arValues, "user param");
-                        Object result = method.invoke( cls.newInstance(), arValues );
+                        Object result = method.invoke( cls.getDeclaredConstructor().newInstance(), arValues );
                         System.out.print("result = " + result);
                         System.out.print("\n");
                     }
@@ -85,7 +85,7 @@ public class ClassTaster
             {
                 arValues[iPosition] = checkMethod[iIndex].invoke(checkType);
                 disply(method, arValues, checkMethod[iIndex].getName());
-                Object result = method.invoke( cls.newInstance(), arValues );
+                Object result = method.invoke( cls.getDeclaredConstructor().newInstance(), arValues );
                 System.out.print("result = " + result);
                 System.out.print("\n");
             }
@@ -106,6 +106,10 @@ public class ClassTaster
         {
             e.printStackTrace();
         }
+        catch ( NoSuchMethodException e )
+        {
+            e.printStackTrace();
+        }
     }
     
     public static Object getDefaultValue(Class<?> cls)
@@ -118,13 +122,21 @@ public class ClassTaster
             {
                 return ((ICheckValue)param).getMiddleValue();
             }
-            return cls.newInstance();
+            return cls.getDeclaredConstructor().newInstance();
         }
         catch ( IllegalAccessException e )
         {
             e.printStackTrace();
         }
         catch ( InstantiationException e )
+        {
+            e.printStackTrace();
+        }
+        catch ( NoSuchMethodException e )
+        {
+            e.printStackTrace();
+        }
+        catch ( InvocationTargetException e )
         {
             e.printStackTrace();
         }
@@ -148,7 +160,7 @@ public class ClassTaster
             return new CheckFloat();
         else if(cls.getName().equals("java.lang.Double") || cls.getName().equals("double"))
             return new CheckDouble();
-        else if(cls.getName().equals("java.lang.Booleane") || cls.getName().equals("boolean"))
+        else if(cls.getName().equals("java.lang.Boolean") || cls.getName().equals("boolean"))
             return new CheckBoolean();
         else if(cls.getName().equals("java.lang.Character") || cls.getName().equals("char"))
             return new CheckCharacter();
